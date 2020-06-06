@@ -1,0 +1,8 @@
+""" provider = {  "name":  request.get_json()['name'],
+                  "age" :  request.get_json()['age'],
+                  "timestamp" : timestamp()
+                }
+    # print(type(provider['name']))
+    if type(provider['name']) != str or type(provider['age']) != int:
+        return jsonify({ "status": 300,
+                   "message": "Enter a valid data type"}),300 """

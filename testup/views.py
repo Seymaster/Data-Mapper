@@ -29,16 +29,18 @@ def on_get():
 
 @app.route('/user/api/create', methods=['POST'])
 def on_create():
-    provider = {  "name":  request.get_json()['name'],
-                  "age" :  request.get_json()['age'],
-                  "timestamp" : timestamp()
-                }
-    print(provider)
-    if type(provider['name']) != str or type(provider['age']) != int:
+    provider = [ {  "providerId" : request.get_json()['providerId'],
+                    "data" : [
+                                {  "name":  request.get_json()['name'],
+                                    "age" :  request.get_json()['age'],
+                                    "timestamp" : timestamp()
+                                    }
+                            ] 
+                }]
+    if type(provider[0]["data"][0]["name"]) != str or type(provider[0]["data"][0]['age']) != int:
         return jsonify({ "status": 300,
                          "message": "Enter a valid data type"}),300
-    Providers[0]['data'].append(provider)
-    print(Providers)
+    Providers.append(provider)
     return jsonify({ "status": 201,
                      "message": "added successful",
                      "data":Providers
@@ -54,7 +56,16 @@ def search(providerId):
 
         nameRule = name.split(":")[0]
         nameValue = name.split(":")[1]
-#     return jsonify({"status" : 200,"message" : "search found"})
+        ageRule = age.split(":")[0]
+        ageValue = age.split(":")[1]
+        tsRule = ts.split(":")[0]
+        tsValue = ts.split(":")[1]
+        if nameValue != name and ageValue != age and tsValue != ts:
+            return jsonify({"status": 200,
+                            "message": "Match found"})
+    return jsonify({"status" : 200,
+                    "message" : "search match"
+                  })
 
 @app.errorhandler(404)
 def not_found(error):
